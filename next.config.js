@@ -34,6 +34,41 @@
 // }
 
 // export default withPayload(nextConfig, { devBundleServerPackages: false })
+// import { withPayload } from '@payloadcms/next/withPayload'
+// import redirects from './redirects.js'
+
+// const NEXT_PUBLIC_SERVER_URL =
+//   process.env.NEXT_PUBLIC_SERVER_URL || process.env.SERVER_URL || 'http://localhost:3000'
+
+// /** @type {import('next').NextConfig} */
+// const nextConfig = {
+//   images: {
+//     remotePatterns: [
+//       {
+//         protocol: new URL(NEXT_PUBLIC_SERVER_URL).protocol.replace(':', ''),
+//         hostname: new URL(NEXT_PUBLIC_SERVER_URL).hostname,
+//       },
+//     ],
+//   },
+//   webpack: (webpackConfig) => {
+//     webpackConfig.resolve.extensionAlias = {
+//       '.cjs': ['.cts', '.cjs'],
+//       '.js': ['.ts', '.tsx', '.js', '.jsx'],
+//       '.mjs': ['.mts', '.mjs'],
+//     }
+//     return webpackConfig
+//   },
+//   reactStrictMode: true,
+//   redirects,
+// }
+
+// export default withPayload(nextConfig, {
+//   devBundleServerPackages: false,
+//   // ✅ Skip Payload init during build to avoid "cannot connect to Postgres" error
+//   disablePayloadInit: process.env.NEXT_PHASE === 'phase-production-build',
+// })
+
+// /Users/zix/znikapdf/next.config.js
 import { withPayload } from '@payloadcms/next/withPayload'
 import redirects from './redirects.js'
 
@@ -42,6 +77,7 @@ const NEXT_PUBLIC_SERVER_URL =
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone', // ✅ add this line
   images: {
     remotePatterns: [
       {
@@ -64,6 +100,6 @@ const nextConfig = {
 
 export default withPayload(nextConfig, {
   devBundleServerPackages: false,
-  // ✅ Skip Payload init during build to avoid "cannot connect to Postgres" error
+  // Avoid DB init at build time
   disablePayloadInit: process.env.NEXT_PHASE === 'phase-production-build',
 })
