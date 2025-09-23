@@ -25,7 +25,7 @@ export default function FlipbookClient() {
   return (
     <div className="block">
       <FlipbookViewer
-        pdfUrl="/try2.pdf"
+        pdfUrl="/znika_short_compressed.pdf"
         shareUrl={undefined} // or a real URL string if you have one
         className="" // or e.g. "w-full h-full"
         disableShare={false} // or true if you want to hide share
