@@ -17,7 +17,7 @@ export default function ZnikaLogo({
 }: Props) {
   return (
     <Image
-      src="/Znika_logo.png"
+      src="/logoblack.jpg"
       alt="Znika Experience"
       width={width}
       height={height}

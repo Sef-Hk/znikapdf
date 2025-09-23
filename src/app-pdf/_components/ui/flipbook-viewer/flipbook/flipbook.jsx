@@ -27,6 +27,10 @@ const Flipbook = memo(({ viewerStates, setViewerStates, flipbookRef, pdfDetails 
         }
     }, [pdfDetails, width, height]);
 
+    
+
+
+
     // Refresh flipbook size & page range on window resize >>>>>>>>
     const shrinkPageLoadingRange = useCallback(() => {
         setViewRange([Math.max(viewerStates.currentPageIndex - 2, 0), Math.min(viewerStates.currentPageIndex + 2, pdfDetails.totalPages)]);
@@ -76,7 +80,21 @@ Flipbook.displayName = 'Flipbook';
 export default Flipbook;
 
 
-////////////////////// Version two 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////// Version two 
 
 
 
@@ -197,119 +215,3 @@ export default Flipbook;
 
 
 
-////////////////////////// Version 3 
-
-// 'use client'
-// import React, { memo, useState, useEffect, useCallback } from 'react'
-// import useRefSize from '@/app-pdf/_hooks/use-ref-size'
-// import FlipbookLoader from './flipbook-loader'
-// import { cn } from '@/app-pdf/_lib/utils'
-// import { TransformComponent } from 'react-zoom-pan-pinch'
-// import screenfull from 'screenfull'
-
-// /** ================================
-//  *  TUNING KNOBS (edit these)
-//  *  ================================ */
-// const HEIGHTS = {
-//   base: 'h-[34rem]',
-//   xs:   'xs:h-[38rem]',
-//   lg:   'lg:h-[46rem]',
-//   xl:   'xl:h-[50rem]',
-// }
-
-// // Keep 'contain' if you want zero cropping
-// const FIT = 'contain' // 'contain' | 'cover'
-
-// // Slight size nudge (use 1.00 – 1.05 if you want tiny bump without crop)
-// const SCALE_MULTIPLIER = 1.00
-// /** ================================= */
-
-// const Flipbook = memo(({ viewerStates, setViewerStates, flipbookRef, pdfDetails }) => {
-//   const { ref, width, height, refreshSize } = useRefSize()
-//   const [scale, setScale] = useState(1)
-//   const [wrapperCss, setWrapperCss] = useState({})
-//   const [viewRange, setViewRange] = useState([0, 4])
-
-//   // Compute scale & wrapper size whenever container or PDF dims change
-//   useEffect(() => {
-//     if (pdfDetails && width && height) {
-//       // A spread = 2 pages wide
-//       const fitScaleWidth  = width  / (2 * pdfDetails.width)
-//       const fitScaleHeight = height / pdfDetails.height
-
-//       // contain = no cropping (use min); cover = fill more (can crop)
-//       const fit = FIT === 'cover'
-//         ? Math.max(fitScaleWidth, fitScaleHeight)
-//         : Math.min(fitScaleWidth, fitScaleHeight)
-
-//       // Hard clamp to 'fit' so it never exceeds container (no cut pages)
-//       const calculatedScale = Math.min(fit * SCALE_MULTIPLIER, fit)
-
-//       setScale(calculatedScale)
-//       setWrapperCss({
-//         width:  `${pdfDetails.width  * calculatedScale * 2}px`,
-//         height: `${pdfDetails.height * calculatedScale}px`,
-//       })
-//     }
-//   }, [pdfDetails, width, height])
-
-//   // Only render nearby pages (perf)
-//   const shrinkPageLoadingRange = useCallback(() => {
-//     const total = pdfDetails?.totalPages ?? 0
-//     setViewRange([
-//       Math.max(viewerStates.currentPageIndex - 2, 0),
-//       Math.min(viewerStates.currentPageIndex + 2, total),
-//     ])
-//   }, [viewerStates.currentPageIndex, pdfDetails?.totalPages])
-
-//   // Handle fullscreen reflow
-//   const handleFullscreenChange = useCallback(() => {
-//     shrinkPageLoadingRange()
-//     refreshSize()
-//   }, [shrinkPageLoadingRange, refreshSize])
-
-//   useEffect(() => {
-//     if (screenfull?.isEnabled) {
-//       screenfull.on('change', handleFullscreenChange)
-//       return () => screenfull.off('change', handleFullscreenChange)
-//     }
-//   }, [handleFullscreenChange])
-
-//   return (
-//     <div
-//       ref={ref}
-//       className={cn(
-//         // Make it tall, center content
-//         'relative w-full bg-transparent flex justify-center items-center pt-10',
-//         // While tuning, allow vertical scroll to guarantee no clipping
-//         'overflow-y-auto overflow-x-hidden',
-//         HEIGHTS.base, HEIGHTS.xs, HEIGHTS.lg, HEIGHTS.xl,
-//         screenfull?.isFullscreen && 'h-[calc(100svh-5.163rem)]'
-//       )}
-//     >
-//       <TransformComponent
-//         wrapperStyle={{ width: '100%', height: '100%' }}
-//         contentStyle={{ width: '100%', height: '100%' }}
-//       >
-//         <div className="flex justify-center items-center h-full w-full">
-//           {pdfDetails && scale > 0 && (
-//             <div style={wrapperCss}>
-//               <FlipbookLoader
-//                 ref={flipbookRef}
-//                 pdfDetails={pdfDetails}
-//                 scale={scale}
-//                 viewRange={viewRange}
-//                 setViewRange={setViewRange}
-//                 viewerStates={viewerStates}
-//                 setViewerStates={setViewerStates}
-//               />
-//             </div>
-//           )}
-//         </div>
-//       </TransformComponent>
-//     </div>
-//   )
-// })
-
-// Flipbook.displayName = 'Flipbook'
-// export default Flipbook

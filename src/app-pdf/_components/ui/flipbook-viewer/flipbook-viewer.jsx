@@ -5,15 +5,21 @@
 // import Flipbook from "./flipbook/flipbook";
 // import screenfull from 'screenfull';
 // import { TransformWrapper } from "react-zoom-pan-pinch";
-// import { Document } from "react-pdf";
+// import { Document, pdfjs } from "react-pdf";      // ✅ import both here
 // import PdfLoading from "./pad-loading/pdf-loading";
-// pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
-// import { pdfjs } from 'react-pdf';
+
 // import 'react-pdf/dist/Page/AnnotationLayer.css';
 // import 'react-pdf/dist/Page/TextLayer.css';
 
+// // ✅ Worker (keep versions in sync)
+// pdfjs.GlobalWorkerOptions.workerSrc =
+//   `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+
+// // ✅ Tell pdf.js where the wasm files live (folder URL, trailing slash!)
+// const DOC_OPTIONS = { wasmUrl: '/wasm/' };
+
 // const FlipbookViewer = ({ pdfUrl, shareUrl, className, disableShare }) => {
-//   const containerRef = useRef(); // For full screen container
+//   const containerRef = useRef();
 //   const flipbookRef = useRef();
 //   const [pdfLoading, setPdfLoading] = useState(true);
 //   const [pdfDetails, setPdfDetails] = useState(null);
@@ -22,7 +28,6 @@
 //     zoomScale: 1,
 //   });
 
-//   // Setting pdf details on document load >>>>>>>>>
 //   const onDocumentLoadSuccess = useCallback(async (document) => {
 //     try {
 //       const pageDetails = await document.getPage(1);
@@ -40,8 +45,13 @@
 //   return (
 //     <div ref={containerRef} className={cn("relative min-h-svh w-full overflow-hidden ", className)}>
 //       {pdfLoading && <PdfLoading />}
-//       <Document file={pdfUrl} onLoadSuccess={onDocumentLoadSuccess} loading={<></>} >
-//         {(pdfDetails && !pdfLoading) &&
+//       <Document
+//         file={pdfUrl}
+//         options={DOC_OPTIONS}                 // ✅ add this
+//         onLoadSuccess={onDocumentLoadSuccess}
+//         loading={<></>}
+//       >
+//         {pdfDetails && !pdfLoading && (
 //           <TransformWrapper
 //             doubleClick={{ disabled: true }}
 //             pinch={{ step: 2 }}
@@ -49,10 +59,11 @@
 //             initialScale={1}
 //             minScale={1}
 //             maxScale={5}
-//             onTransformed={({ state }) => setViewerStates({ ...viewerStates, zoomScale: state.scale })}
+//             onTransformed={({ state }) =>
+//               setViewerStates({ ...viewerStates, zoomScale: state.scale })
+//             }
 //           >
-//             {/* <div className="w-full relative bg-foreground flex flex-col justify-between"> */}
-//              <div className="w-full h-full relative  flex flex-col justify-between">
+//             <div className="w-full h-full relative flex flex-col justify-between">
 //               <Flipbook
 //                 viewerStates={viewerStates}
 //                 setViewerStates={setViewerStates}
@@ -71,16 +82,16 @@
 //                 disableShare={disableShare}
 //               />
 //             </div>
-//           </TransformWrapper >
-//         }
+//           </TransformWrapper>
+//         )}
 //       </Document>
 //     </div>
 //   );
-// }
+// };
 
 // export default FlipbookViewer;
 
-// /src/app-pdf/_components/ui/flipbook-viewer/flipbook-viewer.jsx
+
 'use client';
 import React, { useCallback, useRef, useState } from "react";
 import Toolbar from "./toolbar/toolbar";
@@ -90,13 +101,18 @@ import screenfull from 'screenfull';
 import { TransformWrapper } from "react-zoom-pan-pinch";
 import { Document, pdfjs } from "react-pdf";
 import PdfLoading from "./pad-loading/pdf-loading";
+
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+// ✅ Worker
+pdfjs.GlobalWorkerOptions.workerSrc =
+  `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+
+const DOC_OPTIONS = { wasmUrl: '/wasm/' };
 
 const FlipbookViewer = ({ pdfUrl, shareUrl, className, disableShare }) => {
-  const containerRef = useRef(); // For full screen container
+  const containerRef = useRef();
   const flipbookRef = useRef();
   const [pdfLoading, setPdfLoading] = useState(true);
   const [pdfDetails, setPdfDetails] = useState(null);
@@ -123,15 +139,18 @@ const FlipbookViewer = ({ pdfUrl, shareUrl, className, disableShare }) => {
     <div
       ref={containerRef}
       className={cn(
-        // key change: drop min-h-svh so this component doesn't reserve screen height
-        "relative w-full overflow-visible", 
+        "relative w-full", // ⬅️ removed min-h-svh so it shrinks to content
         className
       )}
     >
       {pdfLoading && <PdfLoading />}
-
-      <Document file={pdfUrl} onLoadSuccess={onDocumentLoadSuccess} loading={<></>}>
-        {(pdfDetails && !pdfLoading) && (
+      <Document
+        file={pdfUrl}
+        options={DOC_OPTIONS}
+        onLoadSuccess={onDocumentLoadSuccess}
+        loading={<></>}
+      >
+        {pdfDetails && !pdfLoading && (
           <TransformWrapper
             doubleClick={{ disabled: true }}
             pinch={{ step: 2 }}
@@ -140,11 +159,11 @@ const FlipbookViewer = ({ pdfUrl, shareUrl, className, disableShare }) => {
             minScale={1}
             maxScale={5}
             onTransformed={({ state }) =>
-              setViewerStates((s) => ({ ...s, zoomScale: state.scale }))
+              setViewerStates({ ...viewerStates, zoomScale: state.scale })
             }
           >
-            {/* key change: remove h-full + justify-between; keep it tight */}
-            <div className="w-full relative flex flex-col gap-0">
+            {/* ⬇️ Changed flex/height handling */}
+            <div className="w-full flex flex-col">
               <Flipbook
                 viewerStates={viewerStates}
                 setViewerStates={setViewerStates}
@@ -152,7 +171,6 @@ const FlipbookViewer = ({ pdfUrl, shareUrl, className, disableShare }) => {
                 screenfull={screenfull}
                 pdfDetails={pdfDetails}
               />
-
               <Toolbar
                 viewerStates={viewerStates}
                 setViewerStates={setViewerStates}
@@ -169,6 +187,7 @@ const FlipbookViewer = ({ pdfUrl, shareUrl, className, disableShare }) => {
       </Document>
     </div>
   );
-}
+};
 
 export default FlipbookViewer;
+

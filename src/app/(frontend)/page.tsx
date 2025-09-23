@@ -58,7 +58,7 @@ export default function Page() {
       {/* <header className="w-full flex justify-center pt-6">
         <ZnikaLogo width={160} height={52} priority />
       </header> */}
-      <header className="w-full flex items-center justify-center py-6 bg-gradient-to-b from-[rgba(1,2,147,1)] to-[rgba(255,255,255,0)]">
+      <header className="w-full flex items-center justify-center py-6 ">
         <ZnikaLogo width={160} height={52} priority />
       </header>
       {/* Flipbook */}
