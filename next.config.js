@@ -34,7 +34,6 @@
 // }
 
 // export default withPayload(nextConfig, { devBundleServerPackages: false })
-
 import { withPayload } from '@payloadcms/next/withPayload'
 import redirects from './redirects.js'
 
@@ -63,4 +62,8 @@ const nextConfig = {
   redirects,
 }
 
-export default withPayload(nextConfig, { devBundleServerPackages: false })
+export default withPayload(nextConfig, {
+  devBundleServerPackages: false,
+  // ✅ Skip Payload init during build to avoid "cannot connect to Postgres" error
+  disablePayloadInit: process.env.NEXT_PHASE === 'phase-production-build',
+})
