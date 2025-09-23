@@ -58,6 +58,7 @@
     "pdfjs-dist": "^5.4.149",
     "prism-react-renderer": "^2.3.1",
     "react": "19.1.0",
+    "react-device-detect": "^2.2.3",
     "react-dom": "19.1.0",
     "react-draggable": "^4.5.0",
     "react-hook-form": "7.45.4",
