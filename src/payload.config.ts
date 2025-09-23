@@ -93,7 +93,7 @@ export default buildConfig({
   },
 })
 
-// src/payload.config.ts
+//src / payload.config.ts
 // import { postgresAdapter } from '@payloadcms/db-postgres'
 // import sharp from 'sharp'
 // import path from 'path'
