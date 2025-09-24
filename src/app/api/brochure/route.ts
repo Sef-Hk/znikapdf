@@ -1,4 +1,4 @@
-// /src/app/api/brochure/route.ts
+//With Brevo
 // import { NextResponse } from 'next/server'
 // import {
 //   TransactionalEmailsApi,
@@ -10,13 +10,13 @@
 
 // export async function POST(req: Request) {
 //   try {
-//     // accept the new field name; everything else unchanged
 //     const { nom = '', prenom = '', domaineProfessionnel = '', email } = await req.json()
 
 //     if (!email) {
 //       return NextResponse.json({ message: 'Missing email' }, { status: 400 })
 //     }
 
+//     // --- Envoi email via Brevo ---
 //     const api = new TransactionalEmailsApi()
 //     api.setApiKey(TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY as string)
 
@@ -27,41 +27,33 @@
 //       name: 'Znika',
 //     }
 //     sendSmtpEmail.subject = 'Votre brochure complète'
-
 //     sendSmtpEmail.htmlContent = `
-//   <p>Bonjour ${prenom} ${nom},</p>
+//       <p>Bonjour ${prenom} ${nom},</p>
+//       <p>Merci de votre intérêt pour <strong>Znika Experience ✨</strong>.</p>
+//       <p>Comme promis, nous avons le plaisir de vous partager la version complète de notre e-brochure.</p>
+//       <p>
+//         <a href="https://www.swisstransfer.com/d/d18f1d98-56c4-4279-90dd-47a43400501d" target="_blank">
+//           📥 Télécharger le catalogue complet
+//         </a>
+//       </p>
+//       <p>À bientôt,<br/>L’équipe Znika Experience.</p>
+//     `
 
-//   <p>Merci de votre intérêt pour <strong>Znika Experience ✨</strong>.</p>
-//   <p>Comme promis, nous avons le plaisir de vous partager la version complète de notre e-brochure.</p>
-
-//   <p>
-//     À travers ces pages, vous découvrirez nos destinations phares, du Nord au Sud,
-//     avec la culture et les richesses naturelles propres à chacune de nos régions.
-//     Vous y retrouverez également nos expériences immersives, pensées pour vous plonger au cœur de chaque univers.
-//     Et laissez-vous surprendre par une escale singulière au cœur de la Casbah,
-//     où notre concept store vous réserve une expérience inattendue.
-//   </p>
-
-//   <p>
-//     <a href="https://www.swisstransfer.com/d/d18f1d98-56c4-4279-90dd-47a43400501d"
-//        target="_blank"
-//        style="display:inline-block;padding:10px 20px;background:#000;color:#fff;text-decoration:none;border-radius:5px;">
-//        📥 Télécharger le catalogue complet
-//     </a>
-//   </p>
-
-//   <p>
-//     Nous avons hâte de vous accompagner dans la découverte de l’Algérie autrement,
-//     entre culture, art et rencontres humaines.
-//   </p>
-
-//   <p>À bientôt,<br/>L’équipe Znika Experience.</p>
-// `
 //     const resp = await api.sendTransacEmail(sendSmtpEmail)
+
+//     // --- Ajout des données dans Google Sheet via Apps Script ---
+//     await fetch(
+//       'https://script.google.com/macros/s/AKfycbzrbOzHS3pr_LNPJtsVVidgYwePO8edtQP0FXjRuSYRft2otmyrpQ9IzOxum6aaZ07s/exec',
+//       {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ nom, prenom, domaineProfessionnel, email }),
+//       },
+//     )
 
 //     return NextResponse.json(
 //       {
-//         message: 'Email envoyé avec succès',
+//         message: 'Email envoyé et données enregistrées avec succès',
 //         messageId: (resp as any)?.messageId ?? null,
 //       },
 //       { status: 200 },
@@ -79,11 +71,6 @@
 // }
 
 import { NextResponse } from 'next/server'
-import {
-  TransactionalEmailsApi,
-  SendSmtpEmail,
-  TransactionalEmailsApiApiKeys,
-} from '@getbrevo/brevo'
 
 export const runtime = 'nodejs'
 
@@ -94,31 +81,6 @@ export async function POST(req: Request) {
     if (!email) {
       return NextResponse.json({ message: 'Missing email' }, { status: 400 })
     }
-
-    // --- Envoi email via Brevo ---
-    const api = new TransactionalEmailsApi()
-    api.setApiKey(TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY as string)
-
-    const sendSmtpEmail = new SendSmtpEmail()
-    sendSmtpEmail.to = [{ email }]
-    sendSmtpEmail.sender = {
-      email: process.env.BREVO_SENDER_EMAIL ?? 'no-reply@yourdomain.com',
-      name: 'Znika',
-    }
-    sendSmtpEmail.subject = 'Votre brochure complète'
-    sendSmtpEmail.htmlContent = `
-      <p>Bonjour ${prenom} ${nom},</p>
-      <p>Merci de votre intérêt pour <strong>Znika Experience ✨</strong>.</p>
-      <p>Comme promis, nous avons le plaisir de vous partager la version complète de notre e-brochure.</p>
-      <p>
-        <a href="https://www.swisstransfer.com/d/d18f1d98-56c4-4279-90dd-47a43400501d" target="_blank">
-          📥 Télécharger le catalogue complet
-        </a>
-      </p>
-      <p>À bientôt,<br/>L’équipe Znika Experience.</p>
-    `
-
-    const resp = await api.sendTransacEmail(sendSmtpEmail)
 
     // --- Ajout des données dans Google Sheet via Apps Script ---
     await fetch(
@@ -132,8 +94,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(
       {
-        message: 'Email envoyé et données enregistrées avec succès',
-        messageId: (resp as any)?.messageId ?? null,
+        message: 'Données enregistrées avec succès',
       },
       { status: 200 },
     )
