@@ -102,12 +102,26 @@ import { TransformWrapper } from "react-zoom-pan-pinch";
 import { Document, pdfjs } from "react-pdf";
 import PdfLoading from "./pad-loading/pdf-loading";
 
+
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
 // ✅ Worker
-pdfjs.GlobalWorkerOptions.workerSrc =
-  `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+// pdfjs.GlobalWorkerOptions.workerSrc =
+//   `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+
+pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
+
+
+// fetch(pdfjs.GlobalWorkerOptions.workerSrc)
+//   .then(res => {
+//     console.log("Worker fetch status:", res.status);
+//     if (!res.ok) throw new Error("Worker not found!");
+//     return res.text();
+//   })
+//   .then(() => console.log("✅ Worker file loaded"))
+//   .catch(err => console.error("❌ Worker file failed to load:", err));
+  
 
 const DOC_OPTIONS = { wasmUrl: '/wasm/' };
 
@@ -148,6 +162,10 @@ const FlipbookViewer = ({ pdfUrl, shareUrl, className, disableShare }) => {
         file={pdfUrl}
         options={DOC_OPTIONS}
         onLoadSuccess={onDocumentLoadSuccess}
+        onLoadError={(err) => {
+          console.error('[react-pdf] load error', err);
+          setPdfLoading(false);
+        }}
         loading={<></>}
       >
         {pdfDetails && !pdfLoading && (

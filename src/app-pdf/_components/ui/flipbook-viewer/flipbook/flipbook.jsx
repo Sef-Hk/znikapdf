@@ -4,7 +4,9 @@ import useRefSize from '@/app-pdf/_hooks/use-ref-size';
 import FlipbookLoader from './flipbook-loader';
 import { cn } from '@/app-pdf/_lib/utils';
 import { TransformComponent } from 'react-zoom-pan-pinch';
+// import screenfull from 'screenfull';
 import screenfull from 'screenfull';
+const sf = screenfull;
 
 const Flipbook = memo(({ viewerStates, setViewerStates, flipbookRef, pdfDetails }) => {
     const { ref, width, height, refreshSize } = useRefSize();

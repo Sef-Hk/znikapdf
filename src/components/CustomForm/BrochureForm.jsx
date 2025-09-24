@@ -449,45 +449,47 @@ export default function BrochureForm() {
 // </p>
 //         </div>
 <div
-className="
-  w-full mx-auto
-  max-w-[min(100%,40rem)] md:max-w-3xl
-  rounded-2xl border border-green-200
-  bg-white text-neutral-900 shadow-lg
-  px-4 py-5 sm:px-6 sm:py-6 md:px-8 md:py-8
-"
-role="status"
-aria-live="polite"
+  className="
+    w-full mx-auto
+    max-w-[min(100%,40rem)] md:max-w-3xl
+    rounded-2xl border border-green-200
+    bg-white text-neutral-900 shadow-lg
+    px-4 py-5 sm:px-6 sm:py-6 md:px-8 md:py-8
+  "
+  role="status"
+  aria-live="polite"
 >
-<h2
-  className={`${relivaRegular.className} text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight mb-3 sm:mb-4 text-center text-green-700`}
->
-  Brochure envoyée avec succès !
-</h2>
-
-<p
-  className={`${relivaRegular.className} text-base sm:text-lg leading-relaxed text-center mb-4`}
->
-  La brochure a été envoyée à votre boîte de réception. 
-  Vous pouvez aussi la télécharger directement ici :
-</p>
-
-<div className="text-center">
-  <a
-    href="/ZnikaLast.pdf"
-    target="_blank"
-    rel="noopener noreferrer"
-    download
-    className="
-      inline-block px-6 py-3
-      bg-[#FF6A08] text-white rounded-xl font-medium
-      hover:opacity-90 transition
-    "
+  <h2
+    className={`${relivaRegular.className} text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight mb-3 sm:mb-4 text-center text-green-700`}
   >
-    📥 Télécharger la brochure
-  </a>
+    Brochure disponible !
+  </h2>
+
+  <p
+    className={`${relivaRegular.className} text-base sm:text-lg leading-relaxed text-center mb-4`}
+  >
+    Merci pour votre intérêt. Vous pouvez télécharger la brochure directement ici :
+  </p>
+
+  <div className="text-center">
+    <a
+      href="/Znika%20Experience%20Brochure%202026.pdf"     
+      target="_blank"
+      rel="noopener noreferrer"
+      download="Znika-Experience-Brochure-2026.pdf"         
+      type="application/pdf"
+      className="
+        inline-block px-6 py-3
+        bg-[#FF6A08] text-white rounded-xl font-medium
+        hover:opacity-90 transition
+      "
+      aria-label="Télécharger la brochure au format PDF"
+    >
+      📥 Télécharger la brochure
+    </a>
+  </div>
 </div>
-</div>
+
       ) : (
         <form
           onSubmit={handleSubmit}
