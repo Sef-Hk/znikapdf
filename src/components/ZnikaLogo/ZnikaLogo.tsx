@@ -7,6 +7,7 @@ type Props = {
   width?: number
   height?: number
   priority?: boolean
+  imageUrl: any
 }
 
 export default function ZnikaLogo({
@@ -14,10 +15,14 @@ export default function ZnikaLogo({
   width = 160,
   height = 52,
   priority = false,
+  imageUrl,
 }: Props) {
+  const LogoUrl = typeof imageUrl === 'object' && imageUrl.url
+  // console.log({ LogoUrl })
+
   return (
     <Image
-      src="/logoblack.jpg"
+      src={LogoUrl}
       alt="Znika Experience"
       width={width}
       height={height}

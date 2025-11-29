@@ -21,11 +21,14 @@ const FlipbookViewer = dynamic(
   { ssr: false },
 )
 
-export default function FlipbookClient() {
+export default function FlipbookClient(props: any) {
+  const DispltPdfUrl = typeof props.pdfUrl === 'object' && props.pdfUrl.url
+  console.log({ DispltPdfUrl })
+
   return (
     <div className="block">
       <FlipbookViewer
-        pdfUrl="/znika_short_compressed.pdf"
+        pdfUrl={DispltPdfUrl}
         shareUrl={undefined} // or a real URL string if you have one
         className="" // or e.g. "w-full h-full"
         disableShare={false} // or true if you want to hide share
