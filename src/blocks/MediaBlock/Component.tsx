@@ -29,8 +29,8 @@ export const MediaBlock: React.FC<Props> = (props) => {
     disableInnerContainer,
   } = props
 
-  let caption
-  if (media && typeof media === 'object') caption = media.caption
+  // let caption
+  // if (media && typeof media === 'object') caption = media.caption
 
   return (
     <div
@@ -49,7 +49,7 @@ export const MediaBlock: React.FC<Props> = (props) => {
           src={staticImage}
         />
       )}
-      {caption && (
+      {/* {caption && (
         <div
           className={cn(
             'mt-6',
@@ -61,7 +61,7 @@ export const MediaBlock: React.FC<Props> = (props) => {
         >
           <RichText data={caption} enableGutter={false} />
         </div>
-      )}
+      )} */}
     </div>
   )
 }
