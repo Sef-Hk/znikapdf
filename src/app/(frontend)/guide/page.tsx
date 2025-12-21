@@ -63,7 +63,7 @@ export default async function Page() {
     depth: 2,
   })
 
-  console.log('global', { global })
+  // console.log('global', { global })
 
   return (
     <div className="flex flex-col">

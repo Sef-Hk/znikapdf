@@ -15,7 +15,7 @@ const relivaRough = localFont({
 });
 
 export default function BrochureForm(props) {
-  console.log({props});
+  // console.log({props});
   const PdfUrlSub = typeof props.submitpdf  === 'object' &&  props.submitpdf.url
   const [form, setForm] = useState({
     nom: '',
