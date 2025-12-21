@@ -22,8 +22,9 @@ const FlipbookViewer = dynamic(
 )
 
 export default function FlipbookClient(props: any) {
-  const DispltPdfUrl = typeof props.pdfUrl === 'object' && props.pdfUrl.url
-  console.log({ DispltPdfUrl })
+  // const DispltPdfUrl = typeof props.pdfUrl === 'object' && props.pdfUrl.url
+  // console.log({ DispltPdfUrl })
+  const DispltPdfUrl = '/znika_short_compressed.pdf'
 
   return (
     <div className="block">

@@ -566,65 +566,8 @@ const FlipbookViewer = ({ pdfUrl, shareUrl, className, disableShare }) => {
     }
   }, []);
 
-  // ==========================
-  // SAFARI FALLBACK (simple PDF pages)
-  // ==========================
-  // if (isSafari) {
-  //   return (
-  //     <div className="w-full h-[90vh]">
-  //       <embed
-  //         src={pdfUrl}
-  //         type="application/pdf"
-  //         width="50%"
-  //         height="50%"
-  //       />
-  //     </div>
-  //   );
-  // }
-
-  // if (isSafari) {
-  //   const safeUrl = encodeURI(pdfUrl); // handles spaces etc.
-  //   const pdfWithView = `${safeUrl}#view=FitH`; // nicer initial fit
   
-  //   return (
-  //     <div
-  //       className={cn(
-  //         "w-full min-h-[90vh] flex items-center justify-center",
-  //         className
-  //       )}
-  //       style={{ backgroundColor: "#f4f2eb" }}
-  //     >
-  //       {/* Centered box with responsive max size */}
-  //       <div className="w-[min(90vw,900px)] h-[min(85vh,1200px)] shadow-lg rounded-xl overflow-hidden border border-neutral-200 bg-white">
-  //         {/* Prefer <object> for Safari; <embed> is a fallback */}
-  //         <object
-  //           data={pdfWithView}
-  //           type="application/pdf"
-  //           className="w-full h-full"
-  //         >
-  //           {/* Fallback if inline preview is blocked */}
-  //           <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-[#f4f2eb]">
-  //             <p className="mb-4 text-neutral-700">
-  //               Impossible d&apos;afficher l&apos;aperçu PDF directement dans Safari.
-  //             </p>
-  //             <a
-  //               href={safeUrl}
-  //               target="_blank"
-  //               rel="noopener noreferrer"
-  //               className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-neutral-300 hover:bg-neutral-100 transition"
-  //             >
-  //               Ouvrir le PDF dans un nouvel onglet
-  //             </a>
-  //           </div>
-  //         </object>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-  
-  
-  
-  if (isSafari) {
+if (isSafari) {
     const safeUrl = encodeURI(pdfUrl);
     const pdfWithView = `${safeUrl}#view=FitH`;
   
