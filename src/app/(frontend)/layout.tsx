@@ -2,6 +2,7 @@
 import '@/app-pdf/_styles/globals.css'
 import { Inter as FontSans } from 'next/font/google'
 import { cn } from '@/app-pdf/_lib/utils'
+import Script from 'next/script'
 
 import NprogressProviders from '@/app-pdf/_providers/nprogress-provider'
 import ThemeProvider from '@/app-pdf/_providers/theme-provider'
@@ -45,6 +46,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className="min-h-svh bg-[url('/znikaBg.jpg')] bg-cover bg-center bg-no-repeat"
     >
       <body className={cn('min-h-svh font-sans antialiased bg-transparent', fontSans.variable)}>
+        <Script
+          src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
+          strategy="afterInteractive"
+        />
         <NprogressProviders>
           <ThemeProvider attribute="class" defaultTheme="dark">
             {children}
