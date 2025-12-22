@@ -53,9 +53,9 @@ const FlipbookViewer = ({ pdfUrl, shareUrl, className, disableShare }) => {
       console.error('Error loading document:', error)
     }
   }, [])
-
+ //className={cn('relative min-h-svh w-full overflow-hidden', className)}
   return (
-    <div ref={containerRef} className={cn('relative min-h-svh w-full overflow-hidden', className)}>
+    <div ref={containerRef} className={cn('relative w-full overflow-hidden', className)}>
       {pdfLoading && <PdfLoading />}
 
       <Document file={pdfUrl} options={DOC_OPTIONS} onLoadSuccess={onDocumentLoadSuccess} loading={<></>}>
