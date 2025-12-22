@@ -75,6 +75,7 @@ export default async function Page() {
 
       <section id="brochure-form" className="mt-6 scroll-mt-24">
         <BrochureForm
+          siteKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? ''}
           submitPdfDesktop={global.submittedPDFDesktop}
           submitPdfMobile={global.submittedPDFMobile}
         />
