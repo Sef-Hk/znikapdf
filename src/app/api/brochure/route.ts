@@ -303,7 +303,7 @@ export async function POST(req: Request) {
 
     // ---- Google Sheet call ----
     const r = await fetch(
-      'https://script.google.com/macros/s/AKfycbzrbOzHS3pr_LNPJtsVVidgYwePO8edtQP0FXjRuSYRft2otmyrpQ9IzOxum6aaZ07s/exec',
+      'https://script.google.com/macros/s/AKfycbzPQ3B2wtC4wscSnmPl-Vdzuo-Q_DftQZSyuj4j2IABZCZCDEaXsuTUaM77eHJfw58a7g/exec',
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
