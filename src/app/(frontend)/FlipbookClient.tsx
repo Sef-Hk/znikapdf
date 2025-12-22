@@ -13,9 +13,14 @@
 // }
 
 'use client'
+import '@/app-pdf/_lib/polyfills/webkit-missing-apis'
 
 import dynamic from 'next/dynamic'
 
+// const FlipbookViewer = dynamic(
+//   () => import('@/app-pdf/_components/ui/flipbook-viewer/flipbook-viewer'),
+//   { ssr: false },
+// )
 const FlipbookViewer = dynamic(
   () => import('@/app-pdf/_components/ui/flipbook-viewer/flipbook-viewer'),
   { ssr: false },

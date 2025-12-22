@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useCallback, useRef, useState } from "react";
 import Toolbar from "./toolbar/toolbar";
 import { cn } from "@/app-pdf/_lib/utils";
@@ -11,9 +12,22 @@ import PdfLoading from "./pad-loading/pdf-loading";
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
+import '@/app-pdf/_lib/polyfills/promise-with-resolvers'
+import dynamic from 'next/dynamic'
+
+
 // ✅ Worker (keep versions in sync)
-pdfjs.GlobalWorkerOptions.workerSrc =
-  `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+// pdfjs.GlobalWorkerOptions.workerSrc =
+//   `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+
+// if (typeof window !== 'undefined') {
+//   pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs'
+// }
+
+if (typeof window !== 'undefined') {
+  pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.patched.mjs'
+}
+
 
 // ✅ Tell pdf.js where the wasm files live (folder URL, trailing slash!)
 const DOC_OPTIONS = { wasmUrl: '/wasm/' };
