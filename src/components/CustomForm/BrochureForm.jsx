@@ -1094,96 +1094,169 @@ export default function BrochureForm(props) {
     setForm((s) => ({ ...s, [name]: value }))
   }, [])
 
+  // const handleSubmit = useCallback(
+  //   async (e) => {
+  //     e.preventDefault()
+  //     setStatus({ loading: true, ok: null, msg: '' })
+
+  //     const grecaptcha = getGrecaptcha()
+  //     const grecaptchaPresent = !!grecaptcha
+  //     setDebug((d) => ({ ...d, grecaptchaPresent, lastError: '', lastApiBody: '', lastApiStatus: null }))
+
+  //     try {
+  //       // ---- Client sanity logs ----
+  //       if (!siteKey) {
+  //         setStatus({
+  //           loading: false,
+  //           ok: false,
+  //           msg:
+  //             "reCAPTCHA: site key manquant. Vérifie que tu passes `siteKey` depuis la page serveur.",
+  //         })
+  //         setDebug((d) => ({
+  //           ...d,
+  //           lastError: 'Missing siteKey prop',
+  //         }))
+  //         return
+  //       }
+
+  //       if (!grecaptchaPresent) {
+  //         setStatus({
+  //           loading: false,
+  //           ok: false,
+  //           msg: "reCAPTCHA indisponible (script non chargé). Rechargez la page.",
+  //         })
+  //         setDebug((d) => ({
+  //           ...d,
+  //           lastError: 'window.grecaptcha is missing',
+  //         }))
+  //         return
+  //       }
+
+  //       // 1) token
+  //       const recaptchaToken = await getRecaptchaToken(siteKey, 'brochure_submit')
+  //       setDebug((d) => ({ ...d, lastTokenLen: recaptchaToken?.length || 0 }))
+
+  //       if (!recaptchaToken) {
+  //         setStatus({
+  //           loading: false,
+  //           ok: false,
+  //           msg: "reCAPTCHA indisponible. Rechargez la page puis réessayez.",
+  //         })
+  //         setDebug((d) => ({
+  //           ...d,
+  //           lastError: 'Token is empty (execute returned empty string)',
+  //         }))
+  //         return
+  //       }
+
+  //       // 2) API call
+  //       const res = await fetch('/api/brochure', {
+  //         method: 'POST',
+  //         headers: { 'Content-Type': 'application/json' },
+  //         body: JSON.stringify({ ...form, recaptchaToken }),
+  //       })
+
+  //       const text = await res.text().catch(() => '')
+  //       setDebug((d) => ({
+  //         ...d,
+  //         lastApiStatus: res.status,
+  //         lastApiBody: text,
+  //       }))
+
+  //       if (!res.ok) {
+  //         // try to extract json message if possible
+  //         let msg = `Request failed (${res.status})`
+  //         try {
+  //           const j = JSON.parse(text || '{}')
+  //           msg =
+  //             j?.details
+  //               ? `reCAPTCHA failed: ${JSON.stringify(j.details)}`
+  //               : j?.message || msg
+  //         } catch {
+  //           if (text) msg = text
+  //         }
+  //         throw new Error(msg)
+  //       }
+
+  //       // 3) success
+  //       setForm({ nom: '', prenom: '', email: '', domaineProfessionnel: '' })
+  //       setStatus({ loading: false, ok: true, msg: '' })
+  //     } catch (err) {
+  //       console.error('[BrochureForm] submit error:', err)
+  //       setDebug((d) => ({ ...d, lastError: err?.message || String(err) }))
+  //       setStatus({
+  //         loading: false,
+  //         ok: false,
+  //         msg: err?.message || 'Une erreur est survenue. Réessayez.',
+  //       })
+  //     }
+  //   },
+  //   [form, siteKey],
+  // )
+
+  // const labelFont = {
+  //   fontFamily: '"Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto',
+  // }
+
   const handleSubmit = useCallback(
     async (e) => {
       e.preventDefault()
       setStatus({ loading: true, ok: null, msg: '' })
-
-      const grecaptcha = getGrecaptcha()
-      const grecaptchaPresent = !!grecaptcha
-      setDebug((d) => ({ ...d, grecaptchaPresent, lastError: '', lastApiBody: '', lastApiStatus: null }))
-
+  
       try {
-        // ---- Client sanity logs ----
         if (!siteKey) {
           setStatus({
             loading: false,
             ok: false,
-            msg:
-              "reCAPTCHA: site key manquant. Vérifie que tu passes `siteKey` depuis la page serveur.",
+            msg: "reCAPTCHA: site key manquant. Vérifie que tu passes `siteKey` depuis la page serveur.",
           })
-          setDebug((d) => ({
-            ...d,
-            lastError: 'Missing siteKey prop',
-          }))
           return
         }
-
+  
+        const grecaptchaPresent = !!getGrecaptcha()
         if (!grecaptchaPresent) {
           setStatus({
             loading: false,
             ok: false,
-            msg: "reCAPTCHA indisponible (script non chargé). Rechargez la page.",
+            msg: 'reCAPTCHA indisponible (script non chargé). Rechargez la page.',
           })
-          setDebug((d) => ({
-            ...d,
-            lastError: 'window.grecaptcha is missing',
-          }))
           return
         }
-
-        // 1) token
+  
         const recaptchaToken = await getRecaptchaToken(siteKey, 'brochure_submit')
-        setDebug((d) => ({ ...d, lastTokenLen: recaptchaToken?.length || 0 }))
-
+  
         if (!recaptchaToken) {
           setStatus({
             loading: false,
             ok: false,
-            msg: "reCAPTCHA indisponible. Rechargez la page puis réessayez.",
+            msg: 'reCAPTCHA indisponible. Rechargez la page puis réessayez.',
           })
-          setDebug((d) => ({
-            ...d,
-            lastError: 'Token is empty (execute returned empty string)',
-          }))
           return
         }
-
-        // 2) API call
+  
         const res = await fetch('/api/brochure', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ ...form, recaptchaToken }),
         })
-
+  
         const text = await res.text().catch(() => '')
-        setDebug((d) => ({
-          ...d,
-          lastApiStatus: res.status,
-          lastApiBody: text,
-        }))
-
+  
         if (!res.ok) {
-          // try to extract json message if possible
-          let msg = `Request failed (${res.status})`
+          let msg = `Erreur (${res.status})`
           try {
             const j = JSON.parse(text || '{}')
-            msg =
-              j?.details
-                ? `reCAPTCHA failed: ${JSON.stringify(j.details)}`
-                : j?.message || msg
+            msg = j?.message || msg
           } catch {
             if (text) msg = text
           }
           throw new Error(msg)
         }
-
-        // 3) success
+  
         setForm({ nom: '', prenom: '', email: '', domaineProfessionnel: '' })
         setStatus({ loading: false, ok: true, msg: '' })
       } catch (err) {
         console.error('[BrochureForm] submit error:', err)
-        setDebug((d) => ({ ...d, lastError: err?.message || String(err) }))
         setStatus({
           loading: false,
           ok: false,
@@ -1193,10 +1266,7 @@ export default function BrochureForm(props) {
     },
     [form, siteKey],
   )
-
-  const labelFont = {
-    fontFamily: '"Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto',
-  }
+  
 
   return (
     <section
