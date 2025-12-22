@@ -42,15 +42,19 @@ import { NextResponse } from 'next/server'
 
 export const runtime = 'nodejs'
 
-async function verifyRecaptcha(token: string, remoteip?: string) {
+async function verifyRecaptcha(token: string) {
   const secret = process.env.RECAPTCHA_SECRET_KEY
-  if (!secret) return { ok: false, reason: 'missing_secret' }
-  if (!token) return { ok: false, reason: 'missing_token' }
+
+  if (!secret) {
+    return { success: false, _reason: 'missing_secret' as const }
+  }
+  if (!token) {
+    return { success: false, _reason: 'missing_token' as const }
+  }
 
   const body = new URLSearchParams()
   body.set('secret', secret)
   body.set('response', token)
-  if (remoteip) body.set('remoteip', remoteip)
 
   const r = await fetch('https://www.google.com/recaptcha/api/siteverify', {
     method: 'POST',
@@ -60,7 +64,6 @@ async function verifyRecaptcha(token: string, remoteip?: string) {
   })
 
   const data = await r.json()
-
   return data
 }
 
@@ -78,22 +81,36 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: 'Missing email' }, { status: 400 })
     }
 
-    // ✅ Verify reCAPTCHA first
     const result: any = await verifyRecaptcha(recaptchaToken)
 
-    // v3 returns: success + score + action + hostname ... :contentReference[oaicite:2]{index=2}
-    const scoreOk = typeof result.score === 'number' ? result.score >= 0.5 : true
-    const actionOk = result.action ? result.action === 'brochure_submit' : true
+    // ---- Helpful checks ----
+    const expectedAction = 'brochure_submit'
+    const scoreThreshold = 0.3 // ✅ start low, tune later
+    const hostnameOk =
+      typeof result.hostname === 'string'
+        ? result.hostname === 'brochure.znikaexperience.com' ||
+          result.hostname.endsWith('.znikaexperience.com') ||
+          result.hostname === 'znikaexperience.com'
+        : true
 
-    if (!result.success || !scoreOk || !actionOk) {
+    const scoreOk = typeof result.score === 'number' ? result.score >= scoreThreshold : true
+    const actionOk = typeof result.action === 'string' ? result.action === expectedAction : true
+
+    if (!result.success || !scoreOk || !actionOk || !hostnameOk) {
       return NextResponse.json(
         {
           message: 'reCAPTCHA failed',
           details: {
+            _reason: result._reason,
             success: result.success,
             score: result.score,
             action: result.action,
             hostname: result.hostname,
+            scoreThreshold,
+            expectedAction,
+            hostnameOk,
+            scoreOk,
+            actionOk,
             'error-codes': result['error-codes'],
           },
         },
@@ -101,7 +118,7 @@ export async function POST(req: Request) {
       )
     }
 
-    // --- your Google Sheet call ---
+    // ---- Your Google Sheet call ----
     const r = await fetch(
       'https://script.google.com/macros/s/AKfycbzrbOzHS3pr_LNPJtsVVidgYwePO8edtQP0FXjRuSYRft2otmyrpQ9IzOxum6aaZ07s/exec',
       {
