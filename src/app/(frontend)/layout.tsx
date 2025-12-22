@@ -17,7 +17,6 @@ export const fontSans = FontSans({
 // Polyfill Promise.withResolvers (react-pdf issue)
 if (typeof Promise.withResolvers === 'undefined') {
   if (typeof window !== 'undefined') {
-    // @ts-expect-error polyfill
     window.Promise.withResolvers = function () {
       let resolve: (v?: unknown) => void, reject: (r?: unknown) => void
       const promise = new Promise((res, rej) => {
