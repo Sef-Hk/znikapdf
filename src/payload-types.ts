@@ -1071,9 +1071,13 @@ export interface Pdfmanager {
    */
   displayPDF?: (number | null) | Media;
   /**
-   * Upload the PDF that will be sent or used after a user submits the brochure form.
+   * PDF to download after submit on desktop/tablet.
    */
-  submittedPDF?: (number | null) | Media;
+  submittedPDFDesktop: number | Media;
+  /**
+   * PDF to download after submit on phones.
+   */
+  submittedPDFMobile: number | Media;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1130,7 +1134,8 @@ export interface FooterSelect<T extends boolean = true> {
 export interface PdfmanagerSelect<T extends boolean = true> {
   logo?: T;
   displayPDF?: T;
-  submittedPDF?: T;
+  submittedPDFDesktop?: T;
+  submittedPDFMobile?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
