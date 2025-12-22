@@ -8,6 +8,7 @@ import NprogressProviders from '@/app-pdf/_providers/nprogress-provider'
 import ThemeProvider from '@/app-pdf/_providers/theme-provider'
 import { Toaster } from '@/app-pdf/_components/ui/toaster'
 import React from 'react'
+import './globals.css'
 
 export const fontSans = FontSans({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],

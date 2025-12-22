@@ -1345,6 +1345,49 @@ export default function BrochureForm(props) {
               {status.msg}
             </div>
           )}
+          {/* reCAPTCHA terms and privacy*/}
+          {/* <p className="mt-4 text-[11px] sm:text-xs text-neutral-500 leading-relaxed">
+  Ce site est protégé par reCAPTCHA et les{' '}
+  <a
+    href="https://policies.google.com/privacy"
+    target="_blank"
+    rel="noreferrer"
+    className="underline hover:opacity-80"
+  >
+    Règles de confidentialité
+  </a>{' '}
+  et les{' '}
+  <a
+    href="https://policies.google.com/terms"
+    target="_blank"
+    rel="noreferrer"
+    className="underline hover:opacity-80"
+  >
+    Conditions d’utilisation
+  </a>{' '}
+  de Google s’appliquent.
+</p> */}
+
+<p className="mt-4 text-xs sm:text-sm text-neutral-600 leading-relaxed">
+  Protection anti-spam par <span className="font-medium">Google reCAPTCHA</span>.{' '}
+  <a
+    href="https://policies.google.com/privacy"
+    target="_blank"
+    rel="noreferrer"
+    className="underline underline-offset-2 font-medium hover:opacity-80"
+  >
+    Confidentialité
+  </a>{' '}
+  •{' '}
+  <a
+    href="https://policies.google.com/terms"
+    target="_blank"
+    rel="noreferrer"
+    className="underline underline-offset-2 font-medium hover:opacity-80"
+  >
+    Conditions
+  </a>
+</p>
 
           
         </form>

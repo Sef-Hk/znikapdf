@@ -133,3 +133,13 @@
 
 /* ===== react-pdf: ensure canvas is transparent ===== */
 .react-pdf__Page__canvas { background: transparent !important; }
+
+/* .grecaptcha-badge {
+  visibility: hidden !important;
+} */
+
+.grecaptcha-badge {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
