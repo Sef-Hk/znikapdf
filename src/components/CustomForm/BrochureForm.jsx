@@ -1194,9 +1194,9 @@ export default function BrochureForm(props) {
   //   [form, siteKey],
   // )
 
-  // const labelFont = {
-  //   fontFamily: '"Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto',
-  // }
+  const labelFont = {
+    fontFamily: '"Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto',
+  }
 
   const handleSubmit = useCallback(
     async (e) => {
